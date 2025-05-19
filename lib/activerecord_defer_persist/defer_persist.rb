@@ -38,7 +38,8 @@ module ActiverecordDeferPersist
         end
 
         define_method "#{singular}_ids" do
-          (@_defer_persist_ids || {}).fetch(association, super())
+          @_defer_persist_ids ||= {}
+          @_defer_persist_ids.fetch(association, super())
         end
 
         define_method association.to_s do
