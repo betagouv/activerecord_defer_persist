@@ -20,6 +20,11 @@ module ActiverecordDeferPersist
       @_defer_persist_ids = {}
     end
 
+    def reload
+      @_defer_persist_ids = {}
+      super
+    end
+
     class_methods do
       def defer_persist(association)
         singular = association.to_s.singularize
@@ -45,10 +50,6 @@ module ActiverecordDeferPersist
           end
         end
 
-        define_method "reload" do
-          @_defer_persist_ids = {}
-          super()
-        end
       end
     end
   end
