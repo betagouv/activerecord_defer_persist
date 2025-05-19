@@ -15,13 +15,13 @@ module ActiverecordDeferPersist
 
       @_defer_persist_ids&.each do |association, new_ids|
         singular = association.to_s.singularize
-        send(:"eager_#{singular}_ids=", new_ids)
+        send(:"original_#{singular}_ids=", new_ids)
       end
       @_defer_persist_ids = {}
 
       @_defer_persist_records&.each do |association, new_records|
         singular = association.to_s.singularize
-        send(:"eager_#{singular}s=", new_records)
+        send(:"original_#{singular}s=", new_records)
       end
       @_defer_persist_records = {}
     end
@@ -35,8 +35,8 @@ module ActiverecordDeferPersist
       def defer_persist(association)
         singular = association.to_s.singularize
 
-        alias_method :"eager_#{singular}_ids=", :"#{singular}_ids="
-        alias_method :"eager_#{singular}s=", :"#{singular}s="
+        alias_method :"original_#{singular}_ids=", :"#{singular}_ids="
+        alias_method :"original_#{singular}s=", :"#{singular}s="
         alias_method :"original_#{singular}_ids", :"#{singular}_ids"
 
         define_method "#{singular}_ids=" do |ids|
@@ -78,6 +78,4 @@ module ActiverecordDeferPersist
       end
     end
   end
-
-  # maybe: lazy_agent_ids
 end
