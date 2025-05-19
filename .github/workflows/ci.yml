@@ -1,0 +1,29 @@
+name: Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  rspec:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ['3.4.3']
+    runs-on: ubuntu-latest
+    name: Testing with Ruby ${{ matrix.ruby }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Install gems
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Run RSpec
+        run: make rspec
