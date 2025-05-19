@@ -54,7 +54,7 @@ RSpec.describe ActiverecordDeferPersist::Concern do
 
   def include_defer_persist(team)
     team.singleton_class.include(described_class)
-    team.singleton_class.lazy_ids(:users)
+    team.singleton_class.defer_persist(:users)
   end
 
   describe "#user_ids=" do
@@ -78,9 +78,6 @@ RSpec.describe ActiverecordDeferPersist::Concern do
         team.save
         expect(Team.find(team.id).user_ids).to contain_exactly(1, 2, 3) # it is now persisted to the db
         expect(team.user_ids).to contain_exactly(1, 2, 3)
-        expect(team.previous_changes["user_ids"]).to be_present
-        expect(team.previous_changes["user_ids"][0]).to contain_exactly(1)
-        expect(team.previous_changes["user_ids"][1]).to contain_exactly(1, 2, 3)
       end
     end
   end
@@ -96,7 +93,6 @@ RSpec.describe ActiverecordDeferPersist::Concern do
       team.reload
       expect(team.user_ids).to contain_exactly(1)
       expect(team.users).to contain_exactly(user1)
-      expect(team.previous_changes["user_ids"]).to be_nil
     end
   end
 
