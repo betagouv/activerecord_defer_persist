@@ -52,37 +52,44 @@ RSpec.describe ActiverecordDeferPersist::Concern do
   let!(:user2) { User.create!(id: 2, name: "Marco") }
   let!(:user3) { User.create!(id: 3, name: "Jungyoon") }
 
-  context "without lazy_ids" do
-    it "#user_ids= persists to the db" do
-      team = Team.create(name: "Lakers", user_ids: [])
-      team.user_ids = [1, 2]
-      expect(Membership.count).to eq(2)
-      expect(Team.find(team.id).user_ids).to contain_exactly(1, 2)
+  def include_defer_persist(team)
+    team.singleton_class.include(described_class)
+    team.singleton_class.lazy_ids(:users)
+  end
+
+  describe "#user_ids=" do
+    context "without defer_persist" do
+      it "#user_ids= persists to the db" do
+        team = Team.create(name: "Lakers", user_ids: [])
+        team.user_ids = [1, 2]
+        expect(Membership.count).to eq(2)
+        expect(Team.find(team.id).user_ids).to contain_exactly(1, 2)
+      end
+    end
+
+    context "with defer_persist" do
+      specify "basic usage" do
+        team = Team.create(user_ids: [1])
+        include_defer_persist(team)
+        team.user_ids = [1, 2, 3]
+        expect(Team.find(team.id).user_ids).to contain_exactly(1) # it has not persisted to the db
+        expect(team.user_ids).to contain_exactly(1, 2, 3) # the getter returns the unpersisted changes
+        expect(team.users).to contain_exactly(user1, user2, user3) # same for the hydrated getter
+        team.save
+        expect(Team.find(team.id).user_ids).to contain_exactly(1, 2, 3) # it is now persisted to the db
+        expect(team.user_ids).to contain_exactly(1, 2, 3)
+        expect(team.previous_changes["user_ids"]).to be_present
+        expect(team.previous_changes["user_ids"][0]).to contain_exactly(1)
+        expect(team.previous_changes["user_ids"][1]).to contain_exactly(1, 2, 3)
+      end
     end
   end
 
-  context "with lazy_ids" do
-    let!(:team) { Team.create(user_ids: [1]) }
 
-    before do
-      team.singleton_class.include(described_class)
-      team.singleton_class.lazy_ids(:users)
-    end
-
-    specify "basic usage" do
-      team.user_ids = [1, 2, 3]
-      expect(Team.find(team.id).user_ids).to contain_exactly(1) # it has not persisted to the db
-      expect(team.user_ids).to contain_exactly(1, 2, 3) # the getter returns the unpersisted changes
-      expect(team.users).to contain_exactly(user1, user2, user3) # same for the hydrated getter
-      team.save
-      expect(Team.find(team.id).user_ids).to contain_exactly(1, 2, 3) # it is now persisted to the db
-      expect(team.user_ids).to contain_exactly(1, 2, 3)
-      expect(team.previous_changes["user_ids"]).to be_present
-      expect(team.previous_changes["user_ids"][0]).to contain_exactly(1)
-      expect(team.previous_changes["user_ids"][1]).to contain_exactly(1, 2, 3)
-    end
-
-    specify "#reload clears unpersisted changes" do
+  describe "#reload" do
+    it "clears unpersisted changes" do
+      team = Team.create(user_ids: [1])
+      include_defer_persist(team)
       team.user_ids = [1, 2, 3]
       expect(team.user_ids).to contain_exactly(1, 2, 3) # the getter returns the unpersisted changes
       expect(team.users).to contain_exactly(user1, user2, user3)
@@ -91,8 +98,12 @@ RSpec.describe ActiverecordDeferPersist::Concern do
       expect(team.users).to contain_exactly(user1)
       expect(team.previous_changes["user_ids"]).to be_nil
     end
+  end
 
-    specify "unrelated changes (no unpersisted lazy_ids changes)" do
+  context "unrelated changes (no has many ids changes)" do
+    it "does not change has many association" do
+      team = Team.create(user_ids: [1])
+      include_defer_persist(team)
       team.name = "Aprèm"
       team.save
       team.reload

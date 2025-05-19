@@ -11,6 +11,7 @@
 - [ ] Add tests for a simple `has_many` association
 - [ ] Support `ActiveModel::Dirty` so we can track changes association with `team.user_ids_changed?`
 - [ ] Override the `.users=` method on top of the `.user_ids` method
+- [ ] wrap changes in a transaction
 
 ## Description
 
