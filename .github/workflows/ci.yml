@@ -26,4 +26,4 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Run RSpec
-        run: make rspec
+        run: make test
