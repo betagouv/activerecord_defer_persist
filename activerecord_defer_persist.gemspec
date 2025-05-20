@@ -1,4 +1,4 @@
-require "activerecord_defer_persist/version"
+require_relative "lib/activerecord_defer_persist/version"
 
 METADATA = {
   "bug_tracker_uri" => "https://github.com/betagouv/activerecord_defer_persist/issues",
