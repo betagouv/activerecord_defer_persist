@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.description = "ActiveRecord defaults to immediately persisting changes to the database on assignments like user.session_ids = [1, 2]. This is a surprising behaviour that this gem aims to fix to be more coherent with regular assignments."
   spec.license = "MIT"
 
-  spec.files = ["lib/activerecord_defer_persist.rb"]
+  spec.files = Dir["lib/**/*", "README.md"]
 
   spec.required_ruby_version = '>= 3.2'
 
