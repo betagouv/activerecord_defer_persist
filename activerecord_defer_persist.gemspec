@@ -24,15 +24,11 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 3.2'
 
-  spec.add_dependency "activesupport", "~> 6"
-  spec.add_dependency "activerecord", "~> 6"
+  spec.add_dependency "activesupport", ">= 7"
+  spec.add_dependency "activerecord", ">= 7"
 
-  spec.add_development_dependency "logger" # I have no idea why these dependencies need to be specified here and I don't want to know
-  spec.add_development_dependency "mutex_m"
-  spec.add_development_dependency "base64"
-  spec.add_development_dependency "bigdecimal"
   spec.add_development_dependency "rspec", "~> 3"
-  spec.add_development_dependency "sqlite3", "~> 1"
+  spec.add_development_dependency "sqlite3", "~> 2"
 
   spec.metadata['rubygems_mfa_required'] = 'true'
 end

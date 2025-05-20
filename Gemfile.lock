@@ -2,33 +2,42 @@ PATH
   remote: .
   specs:
     activerecord_defer_persist (0.2.0)
-      activerecord (~> 6)
-      activesupport (~> 6)
+      activerecord (>= 7)
+      activesupport (>= 7)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (6.1.7.10)
-      activesupport (= 6.1.7.10)
-    activerecord (6.1.7.10)
-      activemodel (= 6.1.7.10)
-      activesupport (= 6.1.7.10)
-    activesupport (6.1.7.10)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
+    activemodel (8.0.2)
+      activesupport (= 8.0.2)
+    activerecord (8.0.2)
+      activemodel (= 8.0.2)
+      activesupport (= 8.0.2)
+      timeout (>= 0.4.0)
+    activesupport (8.0.2)
+      base64
+      benchmark (>= 0.3)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.3.1)
+      connection_pool (>= 2.2.5)
+      drb
       i18n (>= 1.6, < 2)
+      logger (>= 1.4.2)
       minitest (>= 5.1)
-      tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
+      securerandom (>= 0.3)
+      tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
     base64 (0.2.0)
+    benchmark (0.4.0)
     bigdecimal (3.1.9)
     concurrent-ruby (1.3.5)
+    connection_pool (2.5.3)
     diff-lcs (1.6.2)
+    drb (2.2.1)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     logger (1.7.0)
-    mini_portile2 (2.8.9)
     minitest (5.25.5)
-    mutex_m (0.3.0)
     rake (13.2.1)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
@@ -43,11 +52,21 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.3)
-    sqlite3 (1.7.3)
-      mini_portile2 (~> 2.8.0)
+    securerandom (0.4.1)
+    sqlite3 (2.6.0-aarch64-linux-gnu)
+    sqlite3 (2.6.0-aarch64-linux-musl)
+    sqlite3 (2.6.0-arm-linux-gnu)
+    sqlite3 (2.6.0-arm-linux-musl)
+    sqlite3 (2.6.0-arm64-darwin)
+    sqlite3 (2.6.0-x86-linux-gnu)
+    sqlite3 (2.6.0-x86-linux-musl)
+    sqlite3 (2.6.0-x86_64-darwin)
+    sqlite3 (2.6.0-x86_64-linux-gnu)
+    sqlite3 (2.6.0-x86_64-linux-musl)
+    timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    zeitwerk (2.7.2)
+    uri (1.0.3)
 
 PLATFORMS
   aarch64-linux-gnu
@@ -63,13 +82,9 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord_defer_persist!
-  base64
-  bigdecimal
-  logger
-  mutex_m
   rake (~> 13.0)
   rspec (~> 3)
-  sqlite3 (~> 1)
+  sqlite3 (~> 2)
 
 BUNDLED WITH
    2.6.2
