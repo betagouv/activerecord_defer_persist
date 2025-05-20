@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activerecord_defer_persist (0.2.0)
+    activerecord_defer_persist (0.3.0)
       activerecord (>= 7)
       activesupport (>= 7)
 
