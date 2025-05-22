@@ -1,5 +1,5 @@
 require "logger"
-require "activerecord_defer_persist/defer_persist"
+require "activerecord_defer_persist/concern"
 require "active_record"
 
 class CreateTables < ActiveRecord::Migration[6.1]
